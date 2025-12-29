@@ -2,22 +2,24 @@
 
 import * as React from "react";
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
+  Castle,
+  CircleQuestionMark,
+  Earth,
+  Flag,
+  House,
+  Medal,
+  Settings,
+  Shield,
+  Shirt,
+  Trophy,
+  Users,
+  Volleyball,
 } from "lucide-react";
 
 import { NavMain } from "@/components/layout/nav-main";
-import { NavProjects } from "@/components/layout/nav-projects";
+import { NavOthers } from "@/components/layout/nav-others";
 import { NavUser } from "@/components/layout/nav-user";
-import { TeamSwitcher } from "@/components/layout/team-switcher";
+import { GameSwitcher } from "@/components/layout/game-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -29,40 +31,55 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "rezafatur",
+    email: "rezafatur.work@gmail.com",
+    avatar: "/avatars/rezafatur.png",
   },
-  teams: [
+  games: [
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      name: "Football Manager 2026",
+      logo: Volleyball,
+      plan: "New Version",
     },
     {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
+      name: "Football Manager 2025",
+      logo: Volleyball,
+      plan: "Old Version",
     },
     {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
+      name: "Football Manager 2024",
+      logo: Volleyball,
+      plan: "Old Version",
     },
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Portal",
       url: "#",
-      icon: SquareTerminal,
+      icon: House,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "Overview",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "People",
+      url: "#",
+      icon: Users,
+      items: [
+        {
+          title: "Overview",
           url: "#",
         },
         {
-          title: "Starred",
+          title: "Search",
+          url: "#",
+        },
+        {
+          title: "Edit",
           url: "#",
         },
         {
@@ -72,86 +89,177 @@ const data = {
       ],
     },
     {
-      title: "Models",
+      title: "Clubs",
       url: "#",
-      icon: Bot,
+      icon: Shield,
       items: [
         {
-          title: "Genesis",
+          title: "Overview",
           url: "#",
         },
         {
-          title: "Explorer",
+          title: "Search",
           url: "#",
         },
         {
-          title: "Quantum",
+          title: "Edit",
+          url: "#",
+        },
+        {
+          title: "Settings",
           url: "#",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "National Teams",
       url: "#",
-      icon: BookOpen,
+      icon: Flag,
       items: [
         {
-          title: "Introduction",
+          title: "Overview",
           url: "#",
         },
         {
-          title: "Get Started",
+          title: "Search",
           url: "#",
         },
         {
-          title: "Tutorials",
+          title: "Edit",
           url: "#",
         },
         {
-          title: "Changelog",
+          title: "Settings",
           url: "#",
         },
       ],
     },
     {
-      title: "Settings",
+      title: "Kits",
       url: "#",
-      icon: Settings2,
+      icon: Shirt,
       items: [
         {
-          title: "General",
+          title: "Overview",
           url: "#",
         },
         {
-          title: "Team",
+          title: "Search",
           url: "#",
         },
         {
-          title: "Billing",
+          title: "Edit",
           url: "#",
         },
         {
-          title: "Limits",
+          title: "Settings",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Continents",
+      url: "#",
+      icon: Earth,
+      items: [
+        {
+          title: "Overview",
+          url: "#",
+        },
+        {
+          title: "Search",
+          url: "#",
+        },
+        {
+          title: "Edit",
+          url: "#",
+        },
+        {
+          title: "Settings",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Competitions",
+      url: "#",
+      icon: Medal,
+      items: [
+        {
+          title: "Overview",
+          url: "#",
+        },
+        {
+          title: "Search",
+          url: "#",
+        },
+        {
+          title: "Edit",
+          url: "#",
+        },
+        {
+          title: "Settings",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Stadiums",
+      url: "#",
+      icon: Castle,
+      items: [
+        {
+          title: "Overview",
+          url: "#",
+        },
+        {
+          title: "Search",
+          url: "#",
+        },
+        {
+          title: "Edit",
+          url: "#",
+        },
+        {
+          title: "Settings",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Trophies",
+      url: "#",
+      icon: Trophy,
+      items: [
+        {
+          title: "Overview",
+          url: "#",
+        },
+        {
+          title: "Search",
+          url: "#",
+        },
+        {
+          title: "Edit",
+          url: "#",
+        },
+        {
+          title: "Settings",
           url: "#",
         },
       ],
     },
   ],
-  projects: [
+  others: [
     {
-      name: "Design Engineering",
+      name: "Settings",
       url: "#",
-      icon: Frame,
+      icon: Settings,
     },
     {
-      name: "Sales & Marketing",
+      name: "Get Help",
       url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+      icon: CircleQuestionMark,
     },
   ],
 }
@@ -160,11 +268,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <GameSwitcher games={data.games} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavOthers others={data.others} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
