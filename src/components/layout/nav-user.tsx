@@ -83,7 +83,13 @@ export function NavUser({
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() =>
+                  window.electronAPI.openExternal(
+                    "https://github.com/rezafatur/FM-ModHub"
+                  )
+                }
+              >
                 <Github />
                 GitHub Repository
               </DropdownMenuItem>
@@ -93,7 +99,9 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => window.electronAPI.quitApp()}
+            >
               <LogOut />
               Exit
             </DropdownMenuItem>

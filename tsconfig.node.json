@@ -2,11 +2,13 @@
     "compilerOptions": {
         "composite": true,
         "module": "ESNext",
-        "moduleResolution": "bundler",
-        "types": ["node"]
+        "moduleResolution": "node",
+        "types": ["node", "electron"]
     },
     "include": [
         "vite.*.config.mts",
-        "forge.config.ts"
+        "forge.config.ts",
+        "src/main.ts",
+        "src/preload.ts",
     ]
 }
