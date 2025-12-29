@@ -1,5 +1,15 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import Dashboard from "@/pages/Dashboard";
 
-const root = createRoot(document.body);
-root.render(<h2>Hello from React!</h2>);
+const container = document.getElementById("root");
+
+if (!container) {
+    throw new Error("Root container missing in index.html");
+}
+
+createRoot(container).render(
+    <React.StrictMode>
+        <Dashboard />
+    </React.StrictMode>
+)
