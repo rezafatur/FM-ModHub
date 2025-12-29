@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { ThemeProvider } from "@/components/theme-provider"
 import Dashboard from "@/pages/Dashboard";
 
 const container = document.getElementById("root");
@@ -10,6 +11,8 @@ if (!container) {
 
 createRoot(container).render(
     <React.StrictMode>
-        <Dashboard />
+        <ThemeProvider>
+            <Dashboard />
+        </ThemeProvider>
     </React.StrictMode>
 )
