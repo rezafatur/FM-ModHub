@@ -11,13 +11,15 @@ if (started) {
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1280,
+    height: 720,
+    minWidth: 1280,
+    minHeight: 720,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
   });
-
+  
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
@@ -26,7 +28,7 @@ const createWindow = () => {
       path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
     );
   }
-
+  
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
