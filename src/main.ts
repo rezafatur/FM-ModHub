@@ -1,12 +1,22 @@
 import { app, BrowserWindow, ipcMain, Menu, shell } from "electron";
 import type { IpcMainEvent } from "electron"
+import fs from "node:fs";
 import path from "node:path";
+import Store from "electron-store";
 import started from "electron-squirrel-startup";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
 }
+
+// Initialize electron-store with defaults
+const store = new Store({
+  defaults: {
+    normalPath: "",
+    iconPath: "",
+  },
+});
 
 const createWindow = () => {
   Menu.setApplicationMenu(null);
@@ -63,8 +73,37 @@ app.on('activate', () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+function countPngFiles(dirPath: string): number {
+  if (!fs.existsSync(dirPath)) return 0;
+  return fs
+    .readdirSync(dirPath, { withFileTypes: true })
+    .filter(
+      (file) =>
+        file.isFile() && path.extname(file.name).toLowerCase() === ".png"
+    ).length;
+}
+
+// IPC Handlers
+ipcMain.handle("get-face-counts", (_event, normalPath: string, iconPath: string) => {
+  return {
+    normal: countPngFiles(normalPath),
+    icon: countPngFiles(iconPath),
+  };
+});
+
+ipcMain.handle("get-paths", () => {
+  return {
+    normalPath: store.get("normalPath") as string,
+    iconPath: store.get("iconPath") as string,
+  };
+});
+
+ipcMain.handle("save-paths", (_event, normalPath: string, iconPath: string) => {
+  store.set("normalPath", normalPath);
+  store.set("iconPath", iconPath);
+  return { success: true };
+});
+
 ipcMain.on("open-external", (_event: IpcMainEvent, url: string) => {
   shell.openExternal(url)
 });
