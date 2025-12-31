@@ -55,13 +55,13 @@ const data = {
   navMain: [
     {
       title: "Portal",
-      url: "#",
+      url: "/",
       icon: House,
       isActive: true,
       items: [
         {
           title: "Overview",
-          url: "#",
+          url: "/",
         },
       ],
     },
@@ -253,7 +253,7 @@ const data = {
   others: [
     {
       name: "Settings",
-      url: "#",
+      url: "/settings",
       icon: Settings,
     },
     {
