@@ -19,7 +19,7 @@ export function NavOthers({
     icon: LucideIcon
   }[]
 }) {
-  const { isMobile, setOpenMobile } = useSidebar();
+  const { isMobile, setOpenMobile, state } = useSidebar();
   const location = useLocation();
   
   const handleNavClick = () => {
@@ -28,8 +28,10 @@ export function NavOthers({
     }
   };
   
+  const isCollapsed = state === "collapsed";
+  
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+    <SidebarGroup className={isCollapsed ? "" : "group-data-[collapsible=icon]:hidden"}>
       <SidebarGroupLabel>Others</SidebarGroupLabel>
       <SidebarMenu>
         {others.map((item) => {
@@ -37,7 +39,11 @@ export function NavOthers({
           
           return (
             <SidebarMenuItem key={item.name}>
-              <SidebarMenuButton asChild isActive={isActive}>
+              <SidebarMenuButton
+                asChild
+                isActive={isActive}
+                tooltip={item.name}
+              >
                 <Link to={item.url} onClick={handleNavClick}>
                   <item.icon />
                   <span>{item.name}</span>

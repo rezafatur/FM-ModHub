@@ -1,5 +1,5 @@
 import { ChevronRight, type LucideIcon } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import {
   Collapsible,
@@ -33,8 +33,9 @@ export function NavMain({
     }[]
   }[]
 }) {
-  const { isMobile, setOpenMobile } = useSidebar();
+  const { isMobile, setOpenMobile, state } = useSidebar();
   const location = useLocation();
+  const navigate = useNavigate();
   
   const handleNavClick = () => {
     if (isMobile) {
@@ -46,12 +47,26 @@ export function NavMain({
     return item.items?.some(subItem => subItem.url === location.pathname);
   };
   
+  const handleIconClick = (e: React.MouseEvent, item: typeof items[0]) => {
+    const isCollapsed = state === "collapsed";
+    
+    // Jika collapsed dan ada submenu, navigasi ke submenu pertama
+    if (isCollapsed && item.items && item.items.length > 0) {
+      e.preventDefault();
+      navigate(item.items[0].url);
+      if (isMobile) {
+        setOpenMobile(false);
+      }
+    }
+  };
+  
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Menu</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => {
           const hasActiveChild = isParentActive(item);
+          const isCollapsed = state === "collapsed";
           
           return (
             <Collapsible
@@ -62,7 +77,15 @@ export function NavMain({
             >
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={item.title}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    isActive={hasActiveChild}
+                    onClick={(e) => handleIconClick(e, item)}
+                    className={`
+                      ${hasActiveChild && isCollapsed ? "bg-sidebar-accent text-sidebar-accent-foreground" : ""}
+                      ${isCollapsed ? "cursor-pointer" : ""}
+                    `}
+                  >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
                     <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

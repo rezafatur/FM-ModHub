@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react";
+
 import {
   Castle,
   CircleQuestionMark,
@@ -13,20 +14,18 @@ import {
   Shirt,
   Trophy,
   Users,
-  Volleyball,
 } from "lucide-react";
 
-import { NavMain } from "@/components/layout/nav-main";
-import { NavOthers } from "@/components/layout/nav-others";
-import { NavUser } from "@/components/layout/nav-user";
-import { GameSwitcher } from "@/components/layout/game-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
+
+import { NavMain } from "@/components/layout/nav-main";
+import { NavOthers } from "@/components/layout/nav-others";
+import { NavUser } from "@/components/layout/nav-user";
 
 // This is sample data.
 const data = {
@@ -35,23 +34,6 @@ const data = {
     email: "rezafatur.work@gmail.com",
     avatar: "/avatars/rezafatur.png",
   },
-  games: [
-    {
-      name: "Football Manager 2026",
-      logo: Volleyball,
-      plan: "New Version",
-    },
-    {
-      name: "Football Manager 2025",
-      logo: Volleyball,
-      plan: "Old Version",
-    },
-    {
-      name: "Football Manager 2024",
-      logo: Volleyball,
-      plan: "Old Version",
-    },
-  ],
   navMain: [
     {
       title: "Portal",
@@ -267,17 +249,14 @@ const data = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <GameSwitcher games={data.games} />
-      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <SidebarSeparator className="hidden group-data-[collapsible=icon]:block mx-0 w-auto -my-2" />
         <NavOthers others={data.others} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
-      <SidebarRail />
     </Sidebar>
   )
 }
