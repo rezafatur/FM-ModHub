@@ -9,11 +9,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { CheckCircle2Icon } from "lucide-react";
 
 export default function Settings() {
   const [normalPath, setNormalPath] = useState("");
   const [iconPath, setIconPath] = useState("");
   const [saving, setSaving] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   
   useEffect(() => {
     window.electronAPI.getPaths().then(({ normalPath, iconPath }) => {
@@ -33,6 +36,12 @@ export default function Settings() {
     );
     
     setSaving(false);
+    setShowSuccess(true);
+    
+    // Hide alert after 3 seconds
+    setTimeout(() => {
+      setShowSuccess(false);
+    }, 3000);
   };
   
   return (
@@ -45,6 +54,15 @@ export default function Settings() {
       </CardHeader>
       
       <CardContent className="space-y-5">
+        {showSuccess && (
+          <div className="w-full">
+            <Alert>
+              <CheckCircle2Icon />
+              <AlertTitle>Success! Your changes have been saved</AlertTitle>
+            </Alert>
+          </div>
+        )}
+        
         <div className="space-y-2.5">
           <Label>Normal Faces Path</Label>
           <Input

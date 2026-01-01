@@ -5,6 +5,8 @@ export default function PortalOverview() {
     const [faceCounts, setFaceCounts] = useState<{
         normal: number;
         icon: number;
+        normalLastUpdate?: string | null;
+        iconLastUpdate?: string | null;
     } | null>(null);
     const [normalPath, setNormalPath] = useState("");
     const [iconPath, setIconPath] = useState("");
@@ -32,6 +34,20 @@ export default function PortalOverview() {
         setFaceCounts(counts);
     };
     
+    const formatDate = (dateString: string | null) => {
+        if (!dateString) return "-";
+        
+        const date = new Date(dateString);
+        return date.toLocaleString("id-ID", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+        });
+    };
+    
     return (
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <Card>
@@ -43,6 +59,12 @@ export default function PortalOverview() {
                         {faceCounts ? faceCounts.normal.toLocaleString() : "-"}
                     </p>
                     <p className="text-sm text-muted-foreground">PNG files</p>
+                    <div className="mt-4 pt-4 border-t">
+                        <p className="text-xs text-muted-foreground">Last Updated</p>
+                        <p className="text-sm font-medium">
+                            {faceCounts ? formatDate(faceCounts.normalLastUpdate) : "-"}
+                        </p>
+                    </div>
                 </CardContent>
             </Card>
             
@@ -55,6 +77,12 @@ export default function PortalOverview() {
                         {faceCounts ? faceCounts.icon.toLocaleString() : "-"}
                     </p>
                     <p className="text-sm text-muted-foreground">PNG files</p>
+                    <div className="mt-4 pt-4 border-t">
+                        <p className="text-xs text-muted-foreground">Last Updated</p>
+                        <p className="text-sm font-medium">
+                            {faceCounts ? formatDate(faceCounts.iconLastUpdate) : "-"}
+                        </p>
+                    </div>
                 </CardContent>
             </Card>
         </div>

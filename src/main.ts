@@ -83,11 +83,28 @@ function countPngFiles(dirPath: string): number {
     ).length;
 }
 
+function getConfigLastModified(dirPath: string): string | null {
+  if (!fs.existsSync(dirPath)) return null;
+  
+  const configPath = path.join(dirPath, "config.xml");
+  
+  if (!fs.existsSync(configPath)) return null;
+  
+  try {
+    const stats = fs.statSync(configPath);
+    return stats.mtime.toISOString();
+  } catch (error) {
+    return null;
+  }
+}
+
 // IPC Handlers
 ipcMain.handle("get-face-counts", (_event, normalPath: string, iconPath: string) => {
   return {
     normal: countPngFiles(normalPath),
     icon: countPngFiles(iconPath),
+    normalLastUpdate: getConfigLastModified(normalPath),
+    iconLastUpdate: getConfigLastModified(iconPath),
   };
 });
 
