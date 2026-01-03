@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { AppLayout } from "@/components/layout/app-layout";
 
 import PortalOverview from "@/pages/portal/PortalOverview";
+import SortItOutSIOverview from "@/pages/sortitoutsi/SortitoutsiOverview";
 import Settings from "@/pages/others/Settings";
 
 const container = document.getElementById("root");
@@ -18,21 +19,31 @@ const router = createMemoryRouter([
             {
                 handle: { breadcrumb: { label: "Portal", href: "/" } },
                 children: [
-                {
-                    index: true,
-                    element: <PortalOverview />,
-                    handle: { breadcrumb: { label: "Overview" } },
-                },
+                    {
+                        index: true,
+                        element: <PortalOverview />,
+                        handle: { breadcrumb: { label: "Overview" } },
+                    },
+                ],
+            },
+            {
+                handle: { breadcrumb: { label: "SortItOutSI" } },
+                children: [
+                    {
+                        path: "sortitoutsi",
+                        element: <SortItOutSIOverview />,
+                        handle: { breadcrumb: { label: "Overview" } },
+                    },
                 ],
             },
             {
                 handle: { breadcrumb: { label: "Others" } },
                 children: [
-                {
-                    path: "settings",
-                    element: <Settings />,
-                    handle: { breadcrumb: { label: "Settings" } },
-                },
+                    {
+                        path: "settings",
+                        element: <Settings />,
+                        handle: { breadcrumb: { label: "Settings" } },
+                    },
                 ],
             },
         ],

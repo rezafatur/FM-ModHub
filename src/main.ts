@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import Store from "electron-store";
 import started from "electron-squirrel-startup";
+import * as cheerio from "cheerio";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -30,6 +31,7 @@ const createWindow = () => {
     icon: path.join(__dirname, "../assets/icon.png"), // Windows & Linux
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      webSecurity: false, // Allow cross-origin requests
     },
   });
   
@@ -119,6 +121,100 @@ ipcMain.handle("save-paths", (_event, normalPath: string, iconPath: string) => {
   store.set("normalPath", normalPath);
   store.set("iconPath", iconPath);
   return { success: true };
+});
+
+// Fetch using Electron's net module which supports more browser-like behavior
+ipcMain.handle("fetch-sortitoutsi-nations", async (event) => {
+  try {
+    const win = BrowserWindow.fromWebContents(event.sender);
+    if (!win) {
+      throw new Error("Window not found");
+    }
+    
+    // Use executeJavaScript to fetch from renderer context (bypasses CORS and Cloudflare)
+    const result = await win.webContents.executeJavaScript(`
+      (async () => {
+        try {
+          const response = await fetch("https://sortitoutsi.net/football-manager-2026/database", {
+            method: "GET",
+            headers: {
+              "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+              "Accept-Language": "en-US,en;q=0.9",
+              "Cache-Control": "no-cache",
+              "Pragma": "no-cache",
+            },
+            credentials: "include",
+          });
+          
+          if (!response.ok) {
+            throw new Error(\`HTTP error! status: \${response.status}\`);
+          }
+          
+          const html = await response.text();
+          return { success: true, html };
+        } catch (error) {
+          return { success: false, error: error.message };
+        }
+      })()
+    `);
+    
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+    
+    const $ = cheerio.load(result.html);
+    
+    const nations: Array<{
+      id: string;
+      name: string;
+      nickname: string;
+      logo: string;
+      newgens: string;
+      isWomens: boolean;
+      detailUrl: string;
+    }> = [];
+    
+    $("table.table-striped tbody tr").each((_, element) => {
+      const $row = $(element);
+      const gender = $row.attr("class")?.includes("border-left-gender-womens") ? "womens" : "mens";
+      
+      const logoSrc = $row.find("td.row-icon img").attr("src") || "";
+      const nameLink = $row.find("td.row-title a.item-title");
+      const name = nameLink.text().trim();
+      const detailUrl = nameLink.attr("href") || "";
+      const nickname = $row.find("td.row-title .small.text-muted").text().trim();
+      const newgens = $row.find("td").eq(2).text().trim();
+      
+      // Extract ID from URL
+      const idMatch = detailUrl.match(/\/nation\/(\d+)\//);
+      const id = idMatch ? idMatch[1] : "";
+      
+      if (name && id) {
+        nations.push({
+          id,
+          name,
+          nickname,
+          logo: logoSrc,
+          newgens,
+          isWomens: gender === "womens",
+          detailUrl,
+        });
+      }
+    });
+    
+    return { success: true, data: nations };
+  } catch (error) {
+    let errorMessage = "Failed to fetch data from SortItOutSI";
+    
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    
+    return { 
+      success: false, 
+      error: errorMessage
+    };
+  }
 });
 
 ipcMain.on("open-external", (_event: IpcMainEvent, url: string) => {

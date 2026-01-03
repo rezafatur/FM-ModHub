@@ -18,6 +18,19 @@ declare global {
                 normalPath: string,
                 iconPath: string
             ) => Promise<{ success: boolean }>;
+            fetchSortItOutSINations: () => Promise<{
+                success: boolean;
+                data?: Array<{
+                    id: string;
+                    name: string;
+                    nickname: string;
+                    logo: string;
+                    newgens: string;
+                    isWomens: boolean;
+                    detailUrl: string;
+                }>;
+                error?: string;
+            }>;
             openExternal: (url: string) => void
             quitApp: () => void
         }

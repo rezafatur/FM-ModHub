@@ -12,6 +12,7 @@ import {
   Settings,
   Shield,
   Shirt,
+  Speech,
   Trophy,
   Users,
 } from "lucide-react";
@@ -228,6 +229,17 @@ const data = {
         {
           title: "Settings",
           url: "#",
+        },
+      ],
+    },
+    {
+      title: "SortItOutSI",
+      url: "/sortitoutsi",
+      icon: Speech,
+      items: [
+        {
+          title: "Overview",
+          url: "/sortitoutsi",
         },
       ],
     },
